@@ -1,0 +1,191 @@
+[
+  {
+    "iteration": 0,
+    "reward_version": 0,
+    "average_forward_distance": 2.1974756836891176,
+    "average_speed": 0.01305154429282993,
+    "fall_rate": 0.3,
+    "torso_tilt": 0.18050337359309196,
+    "energy_consumption": 1824.0373085021972
+  },
+  {
+    "iteration": 0,
+    "reward_version": 0,
+    "average_forward_distance": 50.58058261871338,
+    "average_speed": 0.13815248534083366,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.25758392959833143,
+    "energy_consumption": 701.9690093994141
+  },
+  {
+    "iteration": 1,
+    "reward_version": 1,
+    "average_forward_distance": 32.05180110931396,
+    "average_speed": 0.1048865057528019,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.1528060719370842,
+    "energy_consumption": 417.85406799316405
+  },
+  {
+    "iteration": 2,
+    "reward_version": 2,
+    "average_forward_distance": 111.4365077972412,
+    "average_speed": 0.136447536945343,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.14998056888580322,
+    "energy_consumption": 1361.7123229980468
+  },
+  {
+    "iteration": 3,
+    "reward_version": 3,
+    "average_forward_distance": 102.84131031036377,
+    "average_speed": 0.10204918757081032,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.14025690406560898,
+    "energy_consumption": 1409.6865783691405
+  },
+  {
+    "iteration": 4,
+    "reward_version": 4,
+    "average_forward_distance": 62.71737003326416,
+    "average_speed": 0.10859471932053566,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.16292947232723237,
+    "energy_consumption": 824.587435913086
+  },
+  {
+    "iteration": 5,
+    "reward_version": 5,
+    "average_forward_distance": 29.597393608093263,
+    "average_speed": 0.11932769864797592,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.18852662891149521,
+    "energy_consumption": 337.56101684570314
+  },
+  {
+    "iteration": 6,
+    "reward_version": 6,
+    "average_forward_distance": 30.33673152923584,
+    "average_speed": 0.10868017971515656,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.14955080300569534,
+    "energy_consumption": 342.9275131225586
+  },
+  {
+    "iteration": 7,
+    "reward_version": 7,
+    "average_forward_distance": 12.830577564239501,
+    "average_speed": 0.09749217107892036,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.2002224750816822,
+    "energy_consumption": 200.24583740234374
+  },
+  {
+    "iteration": 8,
+    "reward_version": 8,
+    "average_forward_distance": 97.94751625061035,
+    "average_speed": 0.1274111621081829,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.12152150943875313,
+    "energy_consumption": 1441.5574890136718
+  },
+  {
+    "iteration": 9,
+    "reward_version": 9,
+    "average_forward_distance": 77.58253173828125,
+    "average_speed": 0.11365668699145318,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.10664869546890259,
+    "energy_consumption": 1262.3316284179687
+  },
+  {
+    "iteration": 0,
+    "reward_version": 0,
+    "average_forward_distance": 146.06368865966797,
+    "average_speed": 0.15946658700704575,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.10742796659469604,
+    "energy_consumption": 1432.3250244140625
+  },
+  {
+    "iteration": 1,
+    "reward_version": 1,
+    "average_forward_distance": 151.03890228271484,
+    "average_speed": 0.17522822618484496,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.060973917692899705,
+    "energy_consumption": 1600.8042846679687
+  },
+  {
+    "iteration": 2,
+    "reward_version": 2,
+    "average_forward_distance": 36.261231422424316,
+    "average_speed": 0.13181831538677216,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.13023945614695548,
+    "energy_consumption": 377.68633422851565
+  },
+  {
+    "iteration": 3,
+    "reward_version": 3,
+    "average_forward_distance": 77.77032995223999,
+    "average_speed": 0.12743025943636893,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.06338834948837757,
+    "energy_consumption": 874.7505554199219
+  },
+  {
+    "iteration": 4,
+    "reward_version": 4,
+    "average_forward_distance": 80.23577117919922,
+    "average_speed": 0.14371030479669572,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.10238532423973083,
+    "energy_consumption": 702.6346466064454
+  },
+  {
+    "iteration": 5,
+    "reward_version": 5,
+    "average_forward_distance": 74.97630977630615,
+    "average_speed": 0.12919372469186782,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.16799592971801758,
+    "energy_consumption": 735.6400543212891
+  },
+  {
+    "iteration": 6,
+    "reward_version": 6,
+    "average_forward_distance": 54.263956451416014,
+    "average_speed": 0.15294440537691117,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.1854795202612877,
+    "energy_consumption": 578.907763671875
+  },
+  {
+    "iteration": 7,
+    "reward_version": 7,
+    "average_forward_distance": 151.13927764892577,
+    "average_speed": 0.1352740466594696,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.0814740926027298,
+    "energy_consumption": 1859.96533203125
+  },
+  {
+    "iteration": 8,
+    "reward_version": 8,
+    "average_forward_distance": 138.44179153442383,
+    "average_speed": 0.14709351807832718,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.2086211010813713,
+    "energy_consumption": 1085.8705444335938
+  },
+  {
+    "iteration": 9,
+    "reward_version": 9,
+    "average_forward_distance": 107.43564376831054,
+    "average_speed": 0.14559221565723418,
+    "fall_rate": 1.0,
+    "torso_tilt": 0.08425048217177392,
+    "energy_consumption": 1226.5008697509766
+  }
+]

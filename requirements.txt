@@ -1,0 +1,7 @@
+gymnasium[box2d]
+stable-baselines3[extra]
+numpy
+tqdm
+openai
+box2d-py
+swig

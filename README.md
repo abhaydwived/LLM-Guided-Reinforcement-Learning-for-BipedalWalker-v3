@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🤖 LLM-Guided Reinforcement Learning for BipedalWalker-v3</h1>
+  <h1>LLM-Guided Reinforcement Learning for BipedalWalker-v3</h1>
   <img src="simulation.gif?v=2" alt="BipedalWalker Simulation Demo" width="600" style="border-radius: 8px; margin: 15px 0;"/>
   <p><i>An automated testbed utilizing GPT-4o to dynamically optimize reward functions and train robust PPO policies.</i></p>
   

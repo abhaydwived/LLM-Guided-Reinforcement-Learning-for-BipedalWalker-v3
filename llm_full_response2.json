@@ -1,0 +1,1 @@
+{"text": "```python\nimport numpy as np\n\ndef compute_reward(obs, action):\n    # 1. Forward velocity reward (primary goal)\n    "}

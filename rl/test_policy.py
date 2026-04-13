@@ -7,36 +7,40 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-from stable_baselines3 import PPO
+from stable_baselines3 import SAC, PPO
+from typing import Union
 
 from env.bipedal_env import make_env
 from evaluation.metrics import compute_metrics
-from config import EVALUATION_EPISODES, REWARD_FILE
+from config import EVALUATION_EPISODES, REWARD_FILE, TERRAIN_DIFFICULTY_LEVEL
 
 
 # ---------------------------------------------------------------------------
 # Live render helper
 # ---------------------------------------------------------------------------
 
-def render_demo(model: PPO,
+def render_demo(model: Union[SAC, PPO],
                 reward_file: str = REWARD_FILE,
                 n_episodes: int = 1,
-                episode_label: str = "") -> None:
+                episode_label: str = "",
+                difficulty_level: float = TERRAIN_DIFFICULTY_LEVEL) -> None:
     """
     Play n_episodes in "human" mode (pygame window) using the trained model.
     Call this after evaluate_policy() to visually inspect the learned behaviour.
 
     Args:
-        model:         trained SB3 PPO model
-        reward_file:   active reward file
-        n_episodes:    how many rendered episodes to show
-        episode_label: optional string shown in the console (e.g. "Iteration 2")
+        model:            trained SB3 SAC model
+        reward_file:      active reward file
+        n_episodes:       how many rendered episodes to show
+        episode_label:    optional string shown in the console (e.g. "Iteration 2")
+        difficulty_level: terrain difficulty passed to make_env (0.0–1.0)
     """
     label = f" [{episode_label}]" if episode_label else ""
     print(f"\n[render_demo]{label} Opening BipedalWalker simulation window …")
     print("  Close the window or wait for the episode(s) to finish.\n")
 
-    env = make_env(reward_file=reward_file, render_mode="human")
+    env = make_env(reward_file=reward_file, render_mode="human",
+                   difficulty_level=difficulty_level)
 
     for ep in range(n_episodes):
         obs, _ = env.reset()
@@ -47,6 +51,7 @@ def render_demo(model: PPO,
         while not done:
             action, _ = model.predict(obs, deterministic=True)
             obs, reward, terminated, truncated, _ = env.step(action)
+            env.render()  # explicit render — needed when not using gymnasium.make()
             total_r += reward
             steps   += 1
             done = terminated or truncated
@@ -63,27 +68,30 @@ def render_demo(model: PPO,
 # Headless metric evaluation
 # ---------------------------------------------------------------------------
 
-def evaluate_policy(model: PPO,
+def evaluate_policy(model: Union[SAC, PPO],
                     n_episodes: int = EVALUATION_EPISODES,
                     reward_file: str = REWARD_FILE,
                     render_demo_episodes: int = 1,
-                    iteration: int = 0) -> dict:
+                    iteration: int = 0,
+                    difficulty_level: float = TERRAIN_DIFFICULTY_LEVEL) -> dict:
     """
     Roll out the trained policy for n_episodes (headless) to collect metrics,
     then open a render window for render_demo_episodes so you can watch the walker.
 
     Args:
-        model:                trained SB3 PPO model
+        model:                trained SB3 SAC model
         n_episodes:           silent evaluation episodes (for metrics)
         reward_file:          active reward file (passed to wrapper)
         render_demo_episodes: episodes to show in the pygame window (0 = skip)
         iteration:            current loop iteration (used in console label)
+        difficulty_level:     terrain difficulty passed to make_env (0.0–1.0)
 
     Returns:
         Dictionary of aggregated performance metrics
     """
     # --- Headless metric collection ---
-    env = make_env(reward_file=reward_file, render_mode=None)
+    env = make_env(reward_file=reward_file, render_mode=None,
+                   difficulty_level=difficulty_level)
     episodes_data = []
 
     for ep in range(n_episodes):
@@ -118,10 +126,11 @@ def evaluate_policy(model: PPO,
     # --- Optional live render ---
     if render_demo_episodes > 0:
         render_demo(
-            model         = model,
-            reward_file   = reward_file,
-            n_episodes    = render_demo_episodes,
-            episode_label = f"Iteration {iteration}",
+            model             = model,
+            reward_file       = reward_file,
+            n_episodes        = render_demo_episodes,
+            episode_label     = f"Iteration {iteration}",
+            difficulty_level  = difficulty_level,
         )
 
     return metrics

@@ -1,0 +1,1 @@
+{"text": "def compute_reward(obs, action):\n    # 1. Forward speed: Maximize forward (x) velocity\n    # obs["}

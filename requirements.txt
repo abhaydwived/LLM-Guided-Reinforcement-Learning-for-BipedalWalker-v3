@@ -2,6 +2,7 @@ gymnasium[box2d]
 stable-baselines3[extra]
 numpy
 tqdm
-openai
+google-generativeai
 box2d-py
 swig
+imageio

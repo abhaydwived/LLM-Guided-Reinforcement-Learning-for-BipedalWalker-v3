@@ -1,1 +1,3 @@
-
+The biped should increase its speed a little bit. It should increase its step size to be between 12cm and 15cm. Also, the walk should look like human walking: one leg swings while the other is in stance, and vice versa.
+Penalize excessive flight times (meaning it spends too much time jumping in the air), which forces the agent to take quick, rapid steps rather than slow bounding leaps.
+If the reward is ok for all of these than donot change it only change those things from which my bipedal walker improves in walking 

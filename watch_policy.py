@@ -17,11 +17,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import imageio
 import numpy as np
-from stable_baselines3 import PPO
+from stable_baselines3 import SAC, PPO
+from typing import Union
 
 from env.bipedal_env import make_env
 from rl.test_policy import render_demo
-from config import MODEL_DIR, REWARD_FILE
+from config import MODEL_DIR, REWARD_FILE, TERRAIN_DIFFICULTY_LEVEL
 
 
 def find_latest_model() -> str:
@@ -36,10 +37,13 @@ def find_latest_model() -> str:
     return max(zips, key=os.path.getmtime)
 
 
-def save_demo_gif(model: PPO, reward_file: str, filename: str = "demo.gif", max_steps: int = 1500) -> None:
+def save_demo_gif(model: Union[SAC, PPO], reward_file: str, filename: str = "demo.gif",
+                  max_steps: int = 5000,
+                  difficulty_level: float = TERRAIN_DIFFICULTY_LEVEL) -> None:
     """Run one episode in rgb_array mode and save the frames as a GIF."""
     print(f"[watch_policy] Running episode to save GIF to {filename} ...")
-    env = make_env(reward_file=reward_file, render_mode="rgb_array")
+    env = make_env(reward_file=reward_file, render_mode="rgb_array",
+                   difficulty_level=difficulty_level)
     
     obs, _ = env.reset()
     done = False
@@ -65,11 +69,11 @@ def save_demo_gif(model: PPO, reward_file: str, filename: str = "demo.gif", max_
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Watch a trained BipedalWalker PPO policy in simulation."
+        description="Watch a trained BipedalWalker SAC policy in simulation."
     )
     parser.add_argument(
         "--iter", type=int, default=None,
-        help="Iteration index to load (e.g. --iter 2 loads models/ppo_bipedal_iter_2.zip)"
+        help="Iteration index to load (e.g. --iter 2 loads models/sac_bipedal_iter_2.zip)"
     )
     parser.add_argument(
         "--model", type=str, default=None,
@@ -83,13 +87,29 @@ def main():
         "--gif", type=str, default=None,
         help="Path to save a GIF of the simulation instead of opening a window (e.g. --gif demo.gif)"
     )
+    parser.add_argument(
+        "--difficulty", type=float, default=None,
+        help=(
+            "Terrain difficulty level (0.0–1.0) for the watched episode. "
+            "Defaults to 1.0 to show all terrain types."
+        ),
+    )
     args = parser.parse_args()
+
+    difficulty = args.difficulty if args.difficulty is not None else 1.0
 
     # --- Resolve model path ---
     if args.model:
         model_path = args.model
     elif args.iter is not None:
-        model_path = os.path.join(MODEL_DIR, f"ppo_bipedal_iter_{args.iter}.zip")
+        sac_path = os.path.join(MODEL_DIR, f"sac_bipedal_iter_{args.iter}.zip")
+        ppo_path = os.path.join(MODEL_DIR, f"ppo_bipedal_iter_{args.iter}.zip")
+        if os.path.isfile(sac_path):
+            model_path = sac_path
+        elif os.path.isfile(ppo_path):
+            model_path = ppo_path
+        else:
+            model_path = sac_path
     else:
         model_path = find_latest_model()
         print(f"[watch_policy] Auto-selected latest model: {model_path}")
@@ -99,17 +119,26 @@ def main():
         sys.exit(1)
 
     print(f"[watch_policy] Loading model from: {model_path}")
-    model = PPO.load(model_path)
+    if "ppo_" in os.path.basename(model_path).lower():
+        model = PPO.load(model_path)
+    else:
+        model = SAC.load(model_path)
 
-    # --- Run rendered episodes or save GIF ---
+    print(f"[watch_policy] Terrain difficulty: {difficulty:.2f}")
+
     if args.gif:
-        save_demo_gif(model=model, reward_file=REWARD_FILE, filename=args.gif)
+        gif_filename = args.gif
+        if not gif_filename.endswith('.gif'):
+            gif_filename += '.gif'
+        save_demo_gif(model=model, reward_file=REWARD_FILE, filename=gif_filename,
+                      difficulty_level=difficulty)
     else:
         render_demo(
-            model         = model,
-            reward_file   = REWARD_FILE,
-            n_episodes    = args.episodes,
-            episode_label = os.path.basename(model_path),
+            model             = model,
+            reward_file       = REWARD_FILE,
+            n_episodes        = args.episodes,
+            episode_label     = os.path.basename(model_path),
+            difficulty_level  = difficulty,
         )
 
 

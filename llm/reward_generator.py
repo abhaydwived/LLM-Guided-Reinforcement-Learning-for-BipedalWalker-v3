@@ -10,7 +10,8 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-import openai
+from google import genai
+from google.genai import types
 
 from config import LLM_API_KEY, MODEL_NAME, REWARD_FILE, REWARD_ARCHIVE
 
@@ -101,36 +102,31 @@ def generate_reward(prompt: str, iteration: int) -> bool:
         False — generation/validation failed; old reward kept
     """
     # Resolve API key: prefer env var, fall back to config
-    api_key = os.environ.get("OPENAI_API_KEY", LLM_API_KEY)
-    if not api_key or api_key == "YOUR_OPENAI_API_KEY_HERE":
-        print("[reward_generator] ERROR: No valid OpenAI API key found.\n"
-              "  Set the OPENAI_API_KEY environment variable or update config.py.")
+    api_key = os.environ.get("GEMINI_API_KEY", LLM_API_KEY)
+    if not api_key or api_key == "YOUR_GEMINI_API_KEY_HERE":
+        print("[reward_generator] ERROR: No valid Gemini API key found.\n"
+              "  Set the GEMINI_API_KEY environment variable or update config.py.")
         return False
 
-    client = openai.OpenAI(api_key=api_key)
+    client = genai.Client(api_key=api_key)
+
+    system_instruction = (
+        "You are an expert RL researcher. "
+        "Return ONLY the requested Python function, no explanations.\n\n"
+    )
+    full_prompt = system_instruction + prompt
 
     print(f"[reward_generator] Calling {MODEL_NAME} …")
     try:
-        response = client.chat.completions.create(
-            model    = MODEL_NAME,
-            messages = [
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an expert RL researcher. "
-                        "Return ONLY the requested Python function, no explanations."
-                    ),
-                },
-                {"role": "user", "content": prompt},
-            ],
-            temperature = 0.3,
-            max_tokens  = 800,
+        response = client.models.generate_content(
+            model=MODEL_NAME,
+            contents=full_prompt,
         )
-    except openai.OpenAIError as exc:
-        print(f"[reward_generator] OpenAI API error: {exc}")
+    except Exception as exc:
+        print(f"[reward_generator] Gemini API error: {exc}")
         return False
 
-    raw_text  = response.choices[0].message.content
+    raw_text = response.text
     print("[reward_generator] Raw LLM response:\n", raw_text[:500], "\n---")
 
     code = _extract_code(raw_text)
